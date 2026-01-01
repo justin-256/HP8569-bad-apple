@@ -6,6 +6,7 @@ SAVE_DENOISED = True  # Set to True to save denoised binary images
 SAVE_CONTOURS = True  # Set to True to save contour images
 SAVE_CONTOURS_DOWNSAMPLED = True  # Set to True to save downsampled contour images
 OUTPUT_FPS = 1.2  # output frames per second
+DIR = './data/bad_apple/'
 
 
 def process_frames(video_path, frames_path, fps): # extract 1 frame per second
@@ -109,12 +110,12 @@ def contour_images(path, save_denoised=False, save_contours=False, save_contours
             new_width = 481  # Horizontal axis has 481 points
             new_height = int(new_width * 3 / 4)  # To maintain a 4:3 aspect ratio
 
-            # Create an empty image with the correct dimensions (361, 481)
+            # Create an empty image with the correct dimensions
             contour_img_ds = np.zeros((new_height, new_width, 3), dtype=np.uint8)
 
             # Iterate over the transformed contours and plot them in the new image
             for x in range(len(transformed_top)):
-                # Scale the top and bottom contours to the new vertical range (1 to 975) to (1 to 361)
+                # Scale the top and bottom contours to the new vertical range (1 to 975)
                 y_top = int((new_height - 1) - (transformed_top[x] - 1) * (new_height - 1) / 975)
                 y_bottom = int((new_height - 1) - (transformed_bottom[x] - 1) * (new_height - 1) / 975)
 
@@ -137,12 +138,11 @@ def transform_contour(cont, old_vertical_range, new_vertical_range, n_points=481
 
 
 if __name__ == "__main__":
-    dir = './data/bad_apple/'
-    if os.path.exists(dir) == False:
-        os.makedirs(dir)
+    if os.path.exists(DIR) == False:
+        os.makedirs(DIR)
 
     # Extract frames from video
-    process_frames('bad_apple.mp4', dir, OUTPUT_FPS)
+    process_frames('bad_apple.mp4', DIR, OUTPUT_FPS)
     
     # Generate contour commands from frames
-    contour_images(dir, SAVE_DENOISED, SAVE_CONTOURS, SAVE_CONTOURS_DOWNSAMPLED)
+    contour_images(DIR, SAVE_DENOISED, SAVE_CONTOURS, SAVE_CONTOURS_DOWNSAMPLED)
