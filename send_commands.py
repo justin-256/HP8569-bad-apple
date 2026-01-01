@@ -39,8 +39,8 @@ if __name__ == "__main__":
     time.sleep(0.7) # I had to add a delay to correctly sync the video and commands
     
     # Clear the text area of the spectrum analyzer
-    hp8569b.write("LL")
-    hp8569b.write("LU")
+    hp8569b.write("LL ")
+    hp8569b.write("LU ")
     
     # Send lines at the correct interval
     start_time = time.time()
